@@ -1,0 +1,140 @@
+.TH MKAWK L
+.deR
+.ft R
+.if!''' \(*r
+..
+.deSB
+.SH "\fB\\$1\\$2\\$3\\$4\fR"
+..
+.SB "Name"
+mkawk - konstruiert ein AWK-File aus einem Text
+.SB "Syntax"
+.B mkawk
+[ -D char ] [ -f textfile ] [ -o awkfile ]
+      [ -A datafile ]
+.SB "Description"
+.ad b
+.I Mkawk
+erstellt ein Programm-File fuer den AWK aus einem vorgegebenen Textfile.
+Dabei koennen im Text AWK-Komandos eingebunden werden. Wird die Option
+.B -f
+angegeben, so wird das Textfile aus
+.I textfile
+gelesen (Default ist stdin). Die Ausgabe erfolgt nach stdout, solange nicht
+die Optionen
+.B -o
+oder
+.B -A
+angegeben werden. Bei der Option
+.B -o
+wird die Ausgabe des AWK-Files in
+.I awkfile
+umgeleitet. Die Option
+.B -A
+veranlasst die Ausfuehrung des AWK-Programms mit dem Eingabefile
+.I datafile.
+Das Trennzeichen fuer die AWK-Felder wird auf ',' gesetzt oder bei Angabe
+der Option
+.B -D
+auf das Zeichen
+.I char.
+.SB "Textformat"
+Das Textfile kann alle beliebigen Zeichen enthalten. Komandos werden durch
+die Zeichen
+.BI "<" "cmd" ">"
+eingeschlossen.
+.br
+.SH Komandos
+.TP 18
+.I Nummer
+Das Feld
+.I Nummer
+wird als String ausgegeben.
+.TP 18
+.BI "$" "Nummer"
+Das Feld
+.I Nummer
+wird als String ausgegeben.
+.TP 18
+.BI "%" "Format" "," "Variable"
+Die 
+.I Variable
+wird im
+.I Format
+ausgegeben.  Die
+.IR Format "-Angabe"
+entspricht der des printf(S).
+.br
+(%s=String  %d=Integer  %m.nf=Float)
+.TP 18
+.BI "#" "Kommentar"
+Der 
+.I Kommentar
+wird in das AWK-File eingebunden.
+.TP 18
+.BI "?" "Bedingung"
+Der folgende Text/Kommandos werden nur ausgefuehrt, wenn die
+.I Bedingung
+zutrifft. Syntax der
+.I Bedingung
+siehe awk(C).
+.br
+( $1=="Test , $1!="Test )
+.TP 18
+.B ?
+Beendet eine bedingte Ausgabe.
+.TP 18
+.BI "!" "Komando"
+.RI "Das AWK-" "Komando"
+wird direkt ausgefuehrt. Syntax der
+.RI "Das AWK-" "Komandos"
+siehe awk(C).
+.TP 18
+.B -
+Der in dieser Zeile folgende Text/Komandos werden ignoriert
+(einschliesslich Zeilenende).
+.TP 18
+.B (
+Ein '<' wird ausgegeben.
+.TP 18
+.B )
+Ein '>' wird ausgegeben.
+.TP 18
+.B @
+Falls sich dieses Komando im Text befindet, wird der Text in max.
+drei Teile geteilt:
+.in +2
+.ce 1
+.RB "BEGIN" "<@>" "MAIN" "<@>" "END"
+.IR BEGIN ":"
+.in +7
+Text/Komandos werden am Anfang vor dem Zugriff auf die Daten ausgegeben.
+.in -7
+.IR MAIN " :"
+.in +7
+Text/Komandos werden bei jedem Datensatz ausgegeben.
+.in -7
+.I END " :"
+.in +7
+Text/Komandos werden am Anfang vor dem Zugriff auf die Daten ausgegeben.
+.in -7
+.sp
+.in -2
+Existiert dieses Komando nicht, so wird der komplette Text/Komandos
+.I MAIN
+zugeordnet.
+.P
+Spezielle Zeichen '<','>',... muessen im Komando mit einem
+.B \e
+versehen werden, da sie sonst nicht korrekt erkannt werden.
+.ad l
+.SB "See also"
+awk(C), printf(S), pmkawk(L)
+.SB Notes
+Der Text darf keine '<' oder '>' Zeichen enthalten, da diese als
+Komando-Begrenzung interpretiert werdes.
+.br
+Siehe dazu pmkawk(L).
+.SB Author
+Michael Wellner, \(co 24-feb-1989 Berlin, West-Germany
+welli@thermob.UUCP
