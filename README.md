@@ -1,7 +1,7 @@
 # mkawk
 The mkawk tool
 
-This was a Tool written 1989 by M.Wellner to generate awk Scripts from simple templates with a documented simple templating language
+This was a Tool written 1989 by M.Wellner to generate awk Scripts from simple templates with a documented simple templating language.
 See the man file (mkawk.LOCAL) for details on usage.
 
 The Tool was originally written in C for an old Unix-based system.
